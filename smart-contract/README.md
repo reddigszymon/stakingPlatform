@@ -45,4 +45,3 @@ To run unit tests write:
 ```bash
 yarn hardhat test
 ```
-# staking
