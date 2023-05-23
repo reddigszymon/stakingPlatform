@@ -4,10 +4,12 @@ import "./index.css";
 import Navbar from "./components/Navbar/Navbar";
 import WalletConnectWrapper from "./components/Navbar/WalletConnectWrapper";
 import StakingPool from "./components/StakingPool/StakingPool";
+import DepositScreen from "./components/DepositScreen/DepositScreen";
 
 function App() {
   const [isPanelVisible, setPanelVisible] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [depositActive, setDepositActive] = useState(false);
 
   const togglePanel = () => {
     setPanelVisible(!isPanelVisible);
@@ -58,8 +60,9 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-      <Navbar togglePanel={togglePanel} />
-      <StakingPool />
+      <Navbar togglePanel={togglePanel} setDepositActive={setDepositActive} />
+      {!depositActive && <StakingPool setDepositActive={setDepositActive} />}
+      {depositActive && <DepositScreen />}
     </div>
   );
 }
