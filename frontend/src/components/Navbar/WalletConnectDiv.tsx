@@ -9,13 +9,12 @@ import { PortisConnector } from "@web3-react/portis-connector";
 interface WalletConnectDivProps {
   image: string;
   text: string;
+  setPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function WalletConnectDiv(props: WalletConnectDivProps) {
   const { activate } = useWeb3React<Web3Provider>();
-  const injectedConnector = new InjectedConnector({
-    supportedChainIds: [1, 3, 4, 5, 13, 42, 56, 137],
-  });
+  const injectedConnector = new InjectedConnector({});
 
   const ethereum_provider =
     process.env.REACT_APP_ETH_PROVIDER === undefined
@@ -33,7 +32,6 @@ function WalletConnectDiv(props: WalletConnectDivProps) {
   };
 
   const coinbaseWalletConnector = new WalletLinkConnector({
-    supportedChainIds: [1, 3, 4, 5, 13, 42, 56, 137],
     url:
       process.env.REACT_APP_MUMBAI_PROVIDER === undefined
         ? ""
@@ -42,7 +40,6 @@ function WalletConnectDiv(props: WalletConnectDivProps) {
   });
 
   const walletConnectConnector = new WalletConnectConnector({
-    supportedChainIds: [1, 137],
     qrcode: true,
     rpc: RPC_URLS,
   });
@@ -59,12 +56,16 @@ function WalletConnectDiv(props: WalletConnectDivProps) {
     try {
       if (props.text === "Metamask") {
         await activate(injectedConnector);
+        props.setPanelVisible(false);
       } else if (props.text === "Coinbase Wallet") {
         await activate(coinbaseWalletConnector);
+        props.setPanelVisible(false);
       } else if (props.text === "WalletConnect") {
         await activate(walletConnectConnector);
+        props.setPanelVisible(false);
       } else if (props.text === "Portis") {
         await activate(portisConnector);
+        props.setPanelVisible(false);
       }
     } catch (error) {
       console.error("Failed to connect wallet", error);

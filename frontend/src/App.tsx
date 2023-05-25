@@ -5,11 +5,19 @@ import Navbar from "./components/Navbar/Navbar";
 import WalletConnectWrapper from "./components/Navbar/WalletConnectWrapper";
 import StakingPool from "./components/StakingPool/StakingPool";
 import DepositScreen from "./components/DepositScreen/DepositScreen";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import Account from "./components/Account/Account";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isPanelVisible, setPanelVisible] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [depositActive, setDepositActive] = useState(false);
+  const [accountWindowActive, setAccountWindowActive] = useState(false);
+
+  const { active, chainId } = useWeb3React<Web3Provider>();
 
   const togglePanel = () => {
     setPanelVisible(!isPanelVisible);
@@ -42,6 +50,8 @@ function App() {
       } flex items-center justify-center`}
       onClick={handleClosePanel}
     >
+      <ToastContainer />
+
       <AnimatePresence>
         {isPanelVisible && (
           <motion.div
@@ -56,13 +66,22 @@ function App() {
             } bg-white `}
             onClick={handlePanelClick}
           >
-            <WalletConnectWrapper />
+            <WalletConnectWrapper setPanelVisible={setPanelVisible} />
           </motion.div>
         )}
       </AnimatePresence>
-      <Navbar togglePanel={togglePanel} setDepositActive={setDepositActive} />
+      <Navbar
+        togglePanel={togglePanel}
+        setDepositActive={setDepositActive}
+        setAccountWindowActive={setAccountWindowActive}
+      />
       {!depositActive && <StakingPool setDepositActive={setDepositActive} />}
       {depositActive && <DepositScreen />}
+      {accountWindowActive && active && (chainId === 137 || chainId === 1) && (
+        <div className="h-screen w-full absolute">
+          <Account setAccountWindowActive={setAccountWindowActive} />
+        </div>
+      )}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import ConnectButton from "./ConnectButton";
 interface NavbarProps {
   togglePanel: () => void;
   setDepositActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccountWindowActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Navbar(props: NavbarProps) {
@@ -19,7 +20,10 @@ function Navbar(props: NavbarProps) {
           UNI-Stake
         </h1>
       </button>
-      <ConnectButton togglePanel={props.togglePanel} />
+      <ConnectButton
+        togglePanel={props.togglePanel}
+        setAccountWindowActive={props.setAccountWindowActive}
+      />
     </div>
   );
 }
