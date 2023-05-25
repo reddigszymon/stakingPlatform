@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ethLogo from "../../assets/images/ethLogo.svg";
 import polygonLogo from "../../assets/images/polygonLogo.svg";
 import chevronDown from "../../assets/images/chevronDown.svg";
@@ -18,20 +18,37 @@ function ConnectButton(props: ConnectButtonProps) {
   const avatar = account ? blockies(account) : "";
   const [dropDownActive, setDropDownActive] = useState(false);
 
+  useEffect(() => {
+    if (dropDownActive) {
+      const closeDropdown = (event: MouseEvent) => {
+        if (!(event.target as Element).closest(".dropdown")) {
+          setDropDownActive(false);
+        }
+      };
+      document.addEventListener("click", closeDropdown);
+      return () => document.removeEventListener("click", closeDropdown);
+    }
+  }, [dropDownActive]);
+
   return (
     <div className="flex items-center gap-[30px]">
-      <button
-        onClick={() => setDropDownActive((prev) => !prev)}
-        className="flex relative items-center gap-[5px] hover:bg-[black] hover:bg-opacity-[5%] py-[10px] px-[5px] rounded-md transition-all"
-      >
-        {chainId === 5 && <img src={ethLogo} className="w-[25px]" />}
-        {chainId === 80001 && <img src={polygonLogo} className="w-[25px]" />}
-        {chainId !== 80001 && chainId !== 5 && (
-          <BiError size={20} color="gray" />
-        )}
-        <img src={chevronDown} className="w-[10px]" />
-        <ChainDropDown chainId={chainId} />
-      </button>
+      {active && (
+        <button
+          onClick={(event) => {
+            event.stopPropagation();
+            setDropDownActive((prev) => !prev);
+          }}
+          className="flex relative items-center gap-[8px] hover:bg-[black] hover:bg-opacity-[5%] py-[10px] px-[5px] rounded-md transition-all"
+        >
+          {chainId === 5 && <img src={ethLogo} className="w-[25px]" />}
+          {chainId === 80001 && <img src={polygonLogo} className="w-[20px]" />}
+          {chainId !== 80001 && chainId !== 5 && (
+            <BiError size={20} color="gray" />
+          )}
+          <img src={chevronDown} className="w-[10px]" />
+          {dropDownActive && active && <ChainDropDown chainId={chainId} />}
+        </button>
+      )}
       {!active && (
         <button
           className="bg-[#FF007A] text-[#FF007A] text-opacity-[90%] bg-opacity-[25%] py-[10px] px-[20px] rounded-2xl font-bold"

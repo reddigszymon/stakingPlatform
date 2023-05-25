@@ -17,6 +17,8 @@ function App() {
   const [depositActive, setDepositActive] = useState(false);
   const [accountWindowActive, setAccountWindowActive] = useState(false);
 
+  console.log(accountWindowActive);
+
   const { active, chainId } = useWeb3React<Web3Provider>();
 
   const togglePanel = () => {
@@ -77,11 +79,13 @@ function App() {
       />
       {!depositActive && <StakingPool setDepositActive={setDepositActive} />}
       {depositActive && <DepositScreen />}
-      {accountWindowActive && active && (chainId === 137 || chainId === 1) && (
-        <div className="h-screen w-full absolute">
-          <Account setAccountWindowActive={setAccountWindowActive} />
-        </div>
-      )}
+      {accountWindowActive &&
+        active &&
+        (chainId === 80001 || chainId === 5) && (
+          <div className="h-screen w-full absolute">
+            <Account setAccountWindowActive={setAccountWindowActive} />
+          </div>
+        )}
     </div>
   );
 }

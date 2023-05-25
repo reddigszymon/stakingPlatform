@@ -43,10 +43,10 @@ function Account(props: AccountProps) {
     let url = "";
 
     if (account && active) {
-      if (chainId === 1) {
-        url = `https://etherscan.io/address/${account}`;
-      } else if (chainId === 137) {
-        url = `https://polygonscan.com/address/${account}`;
+      if (chainId === 5) {
+        url = `https://goerli.etherscan.io/address/${account}`;
+      } else if (chainId === 80001) {
+        url = `https://mumbai.polygonscan.com/address/${account}`;
       }
 
       window.open(url, "_blank");
@@ -103,7 +103,7 @@ function Account(props: AccountProps) {
               >
                 <BsBoxArrowUpRight />
                 <p>{`View on ${
-                  chainId === 137 ? "Polygonscan" : "Etherscan"
+                  chainId === 80001 ? "Polygonscan" : "Etherscan"
                 }`}</p>
               </button>
             </div>
