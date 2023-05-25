@@ -26,6 +26,7 @@ function Account(props: AccountProps) {
             <button onClick={() => props.setAccountWindowActive(false)}>
               <img
                 src={cross}
+                alt="Cross Icon"
                 className="w-[25px] border-[#FF007A] border-[1px]"
               />
             </button>

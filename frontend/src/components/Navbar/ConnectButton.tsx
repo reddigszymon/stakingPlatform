@@ -44,15 +44,15 @@ function ConnectButton(props: ConnectButtonProps) {
           className="flex relative items-center gap-[8px] hover:bg-[black] hover:bg-opacity-[5%] py-[10px] px-[5px] rounded-md transition-all"
         >
           {chainId === ETHEREUM_ID && (
-            <img src={ethLogo} className="w-[25px]" />
+            <img src={ethLogo} alt="Ethereum Logo" className="w-[25px]" />
           )}
           {chainId === POLYGON_ID && (
-            <img src={polygonLogo} className="w-[20px]" />
+            <img src={polygonLogo} alt="Polygon Logo" className="w-[20px]" />
           )}
           {chainId !== POLYGON_ID && chainId !== ETHEREUM_ID && (
             <BiError size={20} color="gray" />
           )}
-          <img src={chevronDown} className="w-[10px]" />
+          <img src={chevronDown} alt="Chevron Down" className="w-[10px]" />
           {dropDownActive && active && <ChainDropDown chainId={chainId} />}
         </button>
       )}

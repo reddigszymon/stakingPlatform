@@ -21,7 +21,7 @@ function ChainButton({
       className="flex items-center justify-between py-[20px] px-[15px] hover:bg-[gainsboro] transition-colors w-full"
     >
       <div className="flex items-center gap-[10px]">
-        <img src={logo} className="w-[30px]" />
+        <img src={logo} alt="UNI Logo" className="w-[30px]" />
         <p>{chainName}</p>
       </div>
       {currentChainId === chainId && <BsCheck color="green" size={20} />}

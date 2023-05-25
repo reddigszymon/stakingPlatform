@@ -7,7 +7,7 @@ function DepositScreen() {
     <div className="flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold z-[-1] md:z-[10] text-[12px] sm:text-[16px] md:text-[18px]">
       <div className="flex w-full justify-between items-center mb-[10px]">
         <p className="text-[#A8A8A8] text-[22px]">UNI Staking</p>
-        <img src={uniToken} />
+        <img src={uniToken} alt="UNI Token" />
       </div>
       <div className="flex w-full justify-between items-center mb-[15px]">
         <div className="w-[45%] px-[15px] py-[10px] bg-[#FCE9F7] flex flex-col gap-[5px] rounded-md">
