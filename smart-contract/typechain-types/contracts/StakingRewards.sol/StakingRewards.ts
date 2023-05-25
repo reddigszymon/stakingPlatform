@@ -39,6 +39,7 @@ export interface StakingRewardsInterface extends utils.Interface {
     "getRewardRate()": FunctionFragment;
     "getStakeLimit()": FunctionFragment;
     "getTokensDepositedForRewards()": FunctionFragment;
+    "getTokensEarnedByStakers()": FunctionFragment;
     "getTotalSupply()": FunctionFragment;
     "getUpdatedAt()": FunctionFragment;
     "lastTimeRewardApplicable()": FunctionFragment;
@@ -56,6 +57,7 @@ export interface StakingRewardsInterface extends utils.Interface {
     "totalSupply()": FunctionFragment;
     "updatedAt()": FunctionFragment;
     "userRewardPerTokenPaid(address)": FunctionFragment;
+    "userStaked(address)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
     "withdrawReward()": FunctionFragment;
   };
@@ -76,6 +78,7 @@ export interface StakingRewardsInterface extends utils.Interface {
       | "getRewardRate"
       | "getStakeLimit"
       | "getTokensDepositedForRewards"
+      | "getTokensEarnedByStakers"
       | "getTotalSupply"
       | "getUpdatedAt"
       | "lastTimeRewardApplicable"
@@ -93,6 +96,7 @@ export interface StakingRewardsInterface extends utils.Interface {
       | "totalSupply"
       | "updatedAt"
       | "userRewardPerTokenPaid"
+      | "userStaked"
       | "withdraw"
       | "withdrawReward"
   ): FunctionFragment;
@@ -145,6 +149,10 @@ export interface StakingRewardsInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getTokensDepositedForRewards",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokensEarnedByStakers",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -210,6 +218,10 @@ export interface StakingRewardsInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "userStaked",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -260,6 +272,10 @@ export interface StakingRewardsInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getTokensDepositedForRewards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokensEarnedByStakers",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -315,6 +331,7 @@ export interface StakingRewardsInterface extends utils.Interface {
     functionFragment: "userRewardPerTokenPaid",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "userStaked", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawReward",
@@ -393,6 +410,8 @@ export interface StakingRewards extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getTokensEarnedByStakers(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getTotalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getUpdatedAt(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -444,6 +463,11 @@ export interface StakingRewards extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    userStaked(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     withdraw(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -493,6 +517,8 @@ export interface StakingRewards extends BaseContract {
   getStakeLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
   getTokensDepositedForRewards(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getTokensEarnedByStakers(overrides?: CallOverrides): Promise<BigNumber>;
 
   getTotalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -545,6 +571,11 @@ export interface StakingRewards extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  userStaked(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   withdraw(
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -594,6 +625,8 @@ export interface StakingRewards extends BaseContract {
     getStakeLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokensDepositedForRewards(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTokensEarnedByStakers(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTotalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -646,6 +679,11 @@ export interface StakingRewards extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    userStaked(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     withdraw(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -697,6 +735,8 @@ export interface StakingRewards extends BaseContract {
 
     getTokensDepositedForRewards(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getTokensEarnedByStakers(overrides?: CallOverrides): Promise<BigNumber>;
+
     getTotalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     getUpdatedAt(overrides?: CallOverrides): Promise<BigNumber>;
@@ -744,6 +784,11 @@ export interface StakingRewards extends BaseContract {
     updatedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
     userRewardPerTokenPaid(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    userStaked(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -803,6 +848,10 @@ export interface StakingRewards extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getTokensEarnedByStakers(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getTotalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getUpdatedAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -856,6 +905,11 @@ export interface StakingRewards extends BaseContract {
     updatedAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     userRewardPerTokenPaid(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    userStaked(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

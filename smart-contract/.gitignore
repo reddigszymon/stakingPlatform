@@ -1,0 +1,23 @@
+# Dependencies
+/node_modules
+
+# Compiled contract artifacts
+/build
+
+# Cache files
+/cache
+
+# Local network files
+/localchain-*.json
+/localchain-*.ganache-db
+
+# Secrets
+/.env
+/.secret
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore IDE project folders
+.idea
+.vscode

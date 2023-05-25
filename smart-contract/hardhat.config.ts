@@ -17,6 +17,7 @@ import { HardhatUserConfig } from "hardhat/config";
 
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || "";
 const POLYGON_RPC_URL = process.env.POLYGON_RPC_URL || "";
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || "";
 const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
@@ -38,6 +39,11 @@ const config: HardhatUserConfig = {
       accounts: [PRIVATE_KEY],
       chainId: 80001,
     },
+    goerli: {
+      url: GOERLI_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 5,
+    },
   },
   solidity: {
     compilers: [
@@ -53,6 +59,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       polygonMumbai: POLYGONSCAN_API_KEY,
       polygon: POLYGONSCAN_API_KEY,
+      goerli: ETHERSCAN_API_KEY,
     },
   },
   gasReporter: {
