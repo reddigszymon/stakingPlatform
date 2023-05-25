@@ -5,7 +5,8 @@ import blockies from "ethereum-blockies-base64";
 import cross from "../../assets/images/cross.svg";
 import { BiCopy } from "react-icons/bi";
 import { BsBoxArrowUpRight } from "react-icons/bs";
-import { toast } from "react-toastify";
+import { copyToClipboard } from "../../utils/copyToClipboard";
+import { redirectToChainExplorer } from "../../utils/redirectToExplorer";
 
 interface AccountProps {
   setAccountWindowActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,44 +15,7 @@ interface AccountProps {
 function Account(props: AccountProps) {
   const { account, chainId, deactivate, active } = useWeb3React<Web3Provider>();
 
-  console.log(chainId);
-
   const avatar = account ? blockies(account) : "";
-
-  const copyToClipboard = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      await navigator.clipboard.writeText(
-        account === null || account === undefined ? "" : account
-      );
-      toast("Copied to clipboard!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
-    }
-  };
-
-  const redirectToChainExplorer = (e: React.MouseEvent) => {
-    e.preventDefault();
-    let url = "";
-
-    if (account && active) {
-      if (chainId === 5) {
-        url = `https://goerli.etherscan.io/address/${account}`;
-      } else if (chainId === 80001) {
-        url = `https://mumbai.polygonscan.com/address/${account}`;
-      }
-
-      window.open(url, "_blank");
-    }
-  };
 
   return (
     <div className=" w-full h-full flex items-center justify-center bg-[#050934] bg-opacity-[75%] fixed z-50">
@@ -91,14 +55,18 @@ function Account(props: AccountProps) {
             )}
             <div className="flex justify-between items-center font-bold">
               <button
-                onClick={(e) => copyToClipboard(e)}
+                onClick={(e) => copyToClipboard(e, account)}
                 className="flex items-center gap-[5px]"
               >
                 <BiCopy />
                 <p>Copy Address</p>
               </button>
               <button
-                onClick={(e) => redirectToChainExplorer(e)}
+                onClick={(e) => {
+                  if (account && active) {
+                    redirectToChainExplorer(e, chainId, account);
+                  }
+                }}
                 className="flex items-center gap-[5px]"
               >
                 <BsBoxArrowUpRight />

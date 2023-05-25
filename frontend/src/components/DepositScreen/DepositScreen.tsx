@@ -1,5 +1,6 @@
 import React from "react";
 import uniToken from "../../assets/images/uniToken.svg";
+import ButtonDeposit from "./ButtonDeposit";
 
 function DepositScreen() {
   return (
@@ -38,15 +39,9 @@ function DepositScreen() {
         </div>
       </div>
       <div className="w-full flex items-center justify-center gap-[15px] mt-[25px] text-[12px] sm:text-[14px] md:text-[16px]">
-        <button className="rounded-xl bg-[#FF007A] bg-opacity-[25%] px-[10px] py-[5px] w-[100px] h-[50px] sm:w-[120px] md:w-[140px] md:h-[70px] md:px-[25px] md:py-[10px]">
-          Claim rewards
-        </button>
-        <button className="rounded-xl bg-[#FF007A] bg-opacity-[50%] px-[10px] py-[5px] w-[100px] h-[50px] sm:w-[120px] md:w-[140px] md:h-[70px]  md:px-[25px] md:py-[10px]">
-          Initialize withdrawal
-        </button>
-        <button className="rounded-xl bg-[#FF007A] bg-opacity-[75%] px-[10px] py-[5px] w-[100px] h-[50px] sm:w-[120px] md:w-[140px] md:h-[70px] md:px-[25px] md:py-[10px]">
-          Deposit
-        </button>
+        <ButtonDeposit text="Claim Rewards" opacity={25} />
+        <ButtonDeposit text="Initialize withdrawal" opacity={50} />
+        <ButtonDeposit text="Deposit" opacity={75} />
       </div>
     </div>
   );

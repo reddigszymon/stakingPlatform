@@ -5,21 +5,31 @@ interface StakingPoolInterface {
   setDepositActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const poolData = {
+  name: "UNI Staking Pool",
+  endTime: "330:23:43:15",
+  tokenImage: uniToken,
+  tokenName: "UNI",
+  totalDeposited: "5.79M / 20.00 M UNI",
+  poolRate: "42%",
+};
+
 function StakingPool(props: StakingPoolInterface) {
   return (
     <div className="flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold z-[-1] md:z-[10] ">
       <div className="flex justify-between items-center text-[#A8A8A8]">
-        <h1 className="text-[20px] mr-[10px]">UNI Staking Pool</h1>
-        <p className="">Rewards end in 330:23:43:15</p>
+        <h1 className="text-[20px] mr-[10px]">{poolData.name}</h1>
+        <p className="">Rewards end in {poolData.endTime}</p>
       </div>
       <div className="w-full h-[180px] lg:h-[230px] rounded-2xl bg-[#FBEBF7] p-[15px] lg:p-[20px] shadow-lg flex flex-col gap-[10px] items-center justify-between">
         <div className="w-full flex justify-between items-center">
           <div className="flex gap-[10px] items-center">
             <img
-              src={uniToken}
+              src={poolData.tokenImage}
+              alt={poolData.tokenName}
               className="w-[40px] h-[40px] lg:h-[60px] lg:w-[60px]"
             />
-            <p className="text-[18px] lg:text-[22px]">UNI</p>
+            <p className="text-[18px] lg:text-[22px]">{poolData.tokenName}</p>
           </div>
           <button
             onClick={() => props.setDepositActive(true)}
@@ -30,15 +40,15 @@ function StakingPool(props: StakingPoolInterface) {
         </div>
         <div className="w-full flex justify-between items-center lg:text-[18px]">
           <p>Total deposited</p>
-          <p className="text-[#FF007A]">5.79M / 20.00 M UNI</p>
+          <p className="text-[#FF007A]">{poolData.totalDeposited}</p>
         </div>
         <div className="w-full flex justify-between items-center lg:text-[18px]">
           <p>Pool rate</p>
-          <p className="text-[#FF007A]">42%</p>
+          <p className="text-[#FF007A]">{poolData.poolRate}</p>
         </div>
       </div>
       <p className="lg:text-[18px] mt-[5px]">
-        Mint UNI Tokens for testing by clicking{" "}
+        Mint {poolData.tokenName} Tokens for testing by clicking{" "}
         <span className="text-blue-600 cursor-pointer">here</span>
       </p>
     </div>

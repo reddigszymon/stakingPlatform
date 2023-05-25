@@ -39,7 +39,7 @@ export async function switchNetwork(network: string) {
           blockExplorerUrls: ["https://explorer.matic.network/"],
         },
       ];
-    } else if (network === "GOERLI") {
+    } else if (network === "Goerli Testnet") {
       chainId = "0x5";
       params = [
         {
@@ -54,7 +54,7 @@ export async function switchNetwork(network: string) {
           blockExplorerUrls: ["https://goerli.etherscan.io/"],
         },
       ];
-    } else if (network === "MUMBAI") {
+    } else if (network === "Mumbai Testnet") {
       chainId = "0x13881";
       params = [
         {

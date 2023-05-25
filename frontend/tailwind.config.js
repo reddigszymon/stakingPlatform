@@ -7,6 +7,9 @@ module.exports = {
         "app-background":
           "linear-gradient(to bottom, var(--color-start), var(--color-middle), var(--color-90percent), var(--color-end))",
       }),
+      screens: {
+        sm500: "500px",
+      },
       colors: {
         "app-gradient-start": "#ffeef9",
         "app-gradient-middle": "#fff7fb",

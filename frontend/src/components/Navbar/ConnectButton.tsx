@@ -8,6 +8,9 @@ import blockies from "ethereum-blockies-base64";
 import { BiError } from "react-icons/bi";
 import ChainDropDown from "./ChainDropDown";
 
+const ETHEREUM_ID = 5;
+const POLYGON_ID = 80001;
+
 interface ConnectButtonProps {
   togglePanel: () => void;
   setAccountWindowActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,7 +34,7 @@ function ConnectButton(props: ConnectButtonProps) {
   }, [dropDownActive]);
 
   return (
-    <div className="flex items-center gap-[30px]">
+    <div className="flex items-center gap-[10px] sm500:gap-[30px]">
       {active && (
         <button
           onClick={(event) => {
@@ -40,9 +43,13 @@ function ConnectButton(props: ConnectButtonProps) {
           }}
           className="flex relative items-center gap-[8px] hover:bg-[black] hover:bg-opacity-[5%] py-[10px] px-[5px] rounded-md transition-all"
         >
-          {chainId === 5 && <img src={ethLogo} className="w-[25px]" />}
-          {chainId === 80001 && <img src={polygonLogo} className="w-[20px]" />}
-          {chainId !== 80001 && chainId !== 5 && (
+          {chainId === ETHEREUM_ID && (
+            <img src={ethLogo} className="w-[25px]" />
+          )}
+          {chainId === POLYGON_ID && (
+            <img src={polygonLogo} className="w-[20px]" />
+          )}
+          {chainId !== POLYGON_ID && chainId !== ETHEREUM_ID && (
             <BiError size={20} color="gray" />
           )}
           <img src={chevronDown} className="w-[10px]" />
@@ -60,14 +67,16 @@ function ConnectButton(props: ConnectButtonProps) {
       {active && (
         <button
           onClick={() => props.setAccountWindowActive(true)}
-          className="bg-[#F5F6FC]  text-opacity-[90%]  py-[8px] px-[12px] rounded-2xl font-bold flex items-center gap-[10px]"
+          className="bg-[#F5F6FC]  text-opacity-[90%] py-[8px] px-[12px] rounded-2xl font-bold flex items-center gap-[10px]"
         >
           <img
             src={avatar}
             alt="avatar"
-            className="rounded-full w-[30px] h-[30px] ml-2"
+            className="rounded-full w-[30px] h-[30px] sm:ml-2"
           />
-          {account?.slice(0, 6) + "..." + account?.slice(38, 42)}
+          {window.innerWidth <= 500
+            ? account?.slice(0, 4) + "..." + account?.slice(39, 42)
+            : account?.slice(0, 6) + "..." + account?.slice(38, 42)}
         </button>
       )}
     </div>
