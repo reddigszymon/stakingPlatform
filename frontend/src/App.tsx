@@ -19,7 +19,7 @@ function App() {
   const [depositActive, setDepositActive] = useState<boolean>(false);
   const [accountWindowActive, setAccountWindowActive] =
     useState<boolean>(false);
-  const [finalScreenActive, setFinalScreenActive] = useState(false);
+  const [finalScreenActive, setFinalScreenActive] = useState("");
 
   const { active, chainId } = useWeb3React<Web3Provider>();
 
@@ -74,10 +74,16 @@ function App() {
       />
       {!depositActive && <StakingPool setDepositActive={setDepositActive} />}
       {depositActive && (
-        <DepositScreen setFinalScreenActive={setFinalScreenActive} />
+        <DepositScreen
+          setFinalScreenActive={setFinalScreenActive}
+          isPanelVisible={isPanelVisible}
+        />
       )}
-      {finalScreenActive && (
-        <FinalScreen setFinalScreenActive={setFinalScreenActive} />
+      {finalScreenActive !== "" && (
+        <FinalScreen
+          finalScreenActive={finalScreenActive}
+          setFinalScreenActive={setFinalScreenActive}
+        />
       )}
       {accountWindowActive &&
         active &&

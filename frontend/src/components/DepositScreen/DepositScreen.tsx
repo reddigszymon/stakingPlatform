@@ -8,14 +8,19 @@ import { depositTokens } from "../../utils/depositTokens";
 import { withdrawTokens } from "../../utils/withdrawTokens";
 
 interface DepositScreenProps {
-  setFinalScreenActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
+  isPanelVisible: boolean;
 }
 
 function DepositScreen(props: DepositScreenProps) {
   const { active, chainId } = useWeb3React<Web3Provider>();
 
   return (
-    <div className="flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold z-[-1] md:z-[10] text-[12px] sm:text-[16px] md:text-[18px]">
+    <div
+      className={`flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold ${
+        props.isPanelVisible ? "z-[-1]" : "z-[1]"
+      } md:z-[10] text-[12px] sm:text-[16px] md:text-[18px]`}
+    >
       <div className="flex w-full justify-between items-center mb-[10px]">
         <p className="text-[#A8A8A8] text-[22px]">UNI Staking</p>
         <img src={uniToken} alt="UNI Token" />

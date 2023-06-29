@@ -3,13 +3,13 @@ import React from "react";
 interface ButtonDepositProps {
   opacity: Number;
   text: string;
-  setFinalScreenActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
   // contractFunction: () => void;
 }
 
 function ButtonDeposit(props: ButtonDepositProps) {
   const handleClick = () => {
-    props.setFinalScreenActive(true);
+    props.setFinalScreenActive(props.text);
   };
 
   return (
