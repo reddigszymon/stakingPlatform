@@ -19,7 +19,9 @@ function FinalScreen(props: FinalScreenProps) {
   return (
     <div className=" w-full h-full flex items-center justify-center bg-[#050934] bg-opacity-[75%] fixed z-50">
       <div
-        className={`bg-[white] w-[20%] h-[35%] min-h-[350px] min-w-[350px] p-[30px] border-2 max-w-[1200px] max-h-[800px] shadow-lg rounded-lg flex flex-col gap-[20px] justify-between
+        className={`bg-[white] w-[20%] h-[35%] min-h-[350px] ${
+          props.finalScreenActive === "Withdraw tokens" ? "min-h-[320px]" : ""
+        } min-w-[350px] p-[30px] border-2 max-w-[1200px] max-h-[800px] shadow-lg rounded-lg flex flex-col gap-[20px] justify-between
        transition-all duration-100 ease-in-out transform-gpu ${
          isVisible ? "scale-100" : "scale-[90%]"
        } 
