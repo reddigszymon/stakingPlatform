@@ -1,5 +1,8 @@
 import React from "react";
 import uniToken from "../../assets/images/uniToken.svg";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import { mintTokens } from "../../utils/mintTokens";
 
 interface StakingPoolInterface {
   setDepositActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +18,8 @@ const poolData = {
 };
 
 function StakingPool(props: StakingPoolInterface) {
+  const { account, active, chainId } = useWeb3React<Web3Provider>();
+
   return (
     <div className="flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold z-[-1] md:z-[10] ">
       <div className="flex justify-between items-center text-[#A8A8A8]">
@@ -49,7 +54,12 @@ function StakingPool(props: StakingPoolInterface) {
       </div>
       <p className="lg:text-[18px] mt-[5px]">
         Mint {poolData.tokenName} Tokens for testing by clicking{" "}
-        <span className="text-blue-600 cursor-pointer">here</span>
+        <button
+          onClick={() => mintTokens(account, active, chainId)}
+          className="text-blue-600 cursor-pointer"
+        >
+          here
+        </button>
       </p>
     </div>
   );

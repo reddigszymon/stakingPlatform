@@ -9,6 +9,7 @@ import StakingPool from "./components/StakingPool/StakingPool";
 import DepositScreen from "./components/DepositScreen/DepositScreen";
 import Account from "./components/Account/Account";
 import PanelAnimation from "./components/Navbar/PanelAnimation";
+import FinalScreen from "./components/DepositScreen/FinalScreen";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,6 +19,7 @@ function App() {
   const [depositActive, setDepositActive] = useState<boolean>(false);
   const [accountWindowActive, setAccountWindowActive] =
     useState<boolean>(false);
+  const [finalScreenActive, setFinalScreenActive] = useState(false);
 
   const { active, chainId } = useWeb3React<Web3Provider>();
 
@@ -71,7 +73,12 @@ function App() {
         setAccountWindowActive={setAccountWindowActive}
       />
       {!depositActive && <StakingPool setDepositActive={setDepositActive} />}
-      {depositActive && <DepositScreen />}
+      {depositActive && (
+        <DepositScreen setFinalScreenActive={setFinalScreenActive} />
+      )}
+      {finalScreenActive && (
+        <FinalScreen setFinalScreenActive={setFinalScreenActive} />
+      )}
       {accountWindowActive &&
         active &&
         (chainId === 80001 || chainId === 5) && (

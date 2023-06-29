@@ -16,6 +16,12 @@ module.exports = {
         "app-gradient-90percent": "#fffbfd",
         "app-gradient-end": "#ffffff",
       },
+      transitionProperty: {
+        height: "height",
+        width: "width",
+        opacity: "opacity",
+        scale: "scale",
+      },
     },
   },
   plugins: [],
