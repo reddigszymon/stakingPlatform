@@ -1,11 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import uniToken from "../../assets/images/uniToken.svg";
-import ButtonDeposit from "./ButtonDeposit";
-import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
-import { claimRewards } from "../../utils/claimReward";
-import { depositTokens } from "../../utils/depositTokens";
-import { withdrawTokens } from "../../utils/withdrawTokens";
+import ButtonDeposit from "./DepositButton/ButtonDeposit";
 
 interface DepositScreenProps {
   setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
@@ -13,8 +8,6 @@ interface DepositScreenProps {
 }
 
 function DepositScreen(props: DepositScreenProps) {
-  const { active, chainId } = useWeb3React<Web3Provider>();
-
   return (
     <div
       className={`flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold ${

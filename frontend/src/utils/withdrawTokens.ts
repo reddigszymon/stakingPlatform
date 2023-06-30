@@ -2,6 +2,8 @@ import { toast } from "react-toastify";
 import { ethers } from "ethers";
 import polygonStaking from "../assets/abis/polygonStaking.json";
 import goerliStaking from "../assets/abis/goerliStaking.json";
+import { displayErrorToast } from "./toastErrorUtils";
+import { initializeContract } from "./initializeContract";
 
 export const withdrawTokens = async (
   active: boolean,
@@ -9,33 +11,15 @@ export const withdrawTokens = async (
   amount: number
 ) => {
   if (!active) {
-    toast.error("Please connect your account first!", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    displayErrorToast("Please connect your account first!");
     return;
   }
   if (chainId !== 80001 && chainId !== 5) {
-    toast.error("Please switch your chain to either Mumbai or!", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    displayErrorToast("Please switch your chain to either Mumbai or Goerli!");
     return;
   }
 
   try {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
     const contractAddress =
       chainId === 80001
         ? "0x13D076Bf577541c699d6E8BD21286BEabc6E7B4b"
@@ -43,7 +27,7 @@ export const withdrawTokens = async (
 
     const abi = chainId === 80001 ? polygonStaking : goerliStaking;
 
-    const contract = new ethers.Contract(contractAddress, abi, signer);
+    const contract = await initializeContract(abi, contractAddress);
 
     const amountToWithdraw = ethers.parseEther(amount.toString());
 

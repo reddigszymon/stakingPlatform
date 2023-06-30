@@ -12,6 +12,7 @@ import PanelAnimation from "./components/Navbar/PanelAnimation";
 import FinalScreen from "./components/DepositScreen/FinalScreen";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
+import { fetchAvailableBalance } from "./utils/fetchAvailableBalance";
 
 function App() {
   const [isPanelVisible, setPanelVisible] = useState<boolean>(false);
@@ -20,8 +21,11 @@ function App() {
   const [accountWindowActive, setAccountWindowActive] =
     useState<boolean>(false);
   const [finalScreenActive, setFinalScreenActive] = useState("");
+  const [availableBalance, setAvailableBalance] = useState<number | undefined>(
+    0
+  );
 
-  const { active, chainId } = useWeb3React<Web3Provider>();
+  const { active, chainId, account } = useWeb3React<Web3Provider>();
 
   const togglePanel = () => {
     setPanelVisible(!isPanelVisible);
@@ -46,6 +50,17 @@ function App() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (active) {
+      const fetchBalance = async () => {
+        const balance = await fetchAvailableBalance(chainId, account);
+        setAvailableBalance(balance);
+      };
+
+      fetchBalance();
+    }
+  }, [active]);
 
   return (
     <div
@@ -83,6 +98,7 @@ function App() {
         <FinalScreen
           finalScreenActive={finalScreenActive}
           setFinalScreenActive={setFinalScreenActive}
+          availableBalance={availableBalance}
         />
       )}
       {accountWindowActive &&

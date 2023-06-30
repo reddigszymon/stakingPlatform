@@ -1,5 +1,7 @@
 import React from "react";
-
+import { displayErrorToast } from "../../../utils/toastErrorUtils";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 interface ButtonDepositProps {
   opacity: Number;
   text: string;
@@ -8,7 +10,17 @@ interface ButtonDepositProps {
 }
 
 function ButtonDeposit(props: ButtonDepositProps) {
+  const { active, chainId } = useWeb3React<Web3Provider>();
+
   const handleClick = () => {
+    if (!active) {
+      displayErrorToast("Please connect your account first!");
+      return;
+    }
+    if (chainId !== 80001 && chainId !== 5) {
+      displayErrorToast("Please switch your chain to either Mumbai or Goerli!");
+      return;
+    }
     props.setFinalScreenActive(props.text);
   };
 

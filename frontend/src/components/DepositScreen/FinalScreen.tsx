@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import ClaimRewardsScreen from "./ClaimRewardsScreen";
 import WithdrawTokensScreen from "./WithdrawTokensScreen";
-import DepositTokensScreen from "./DepositTokensScreen";
+import DepositTokensScreen from "./DepositButton/DepositTokensScreen";
 
 interface FinalScreenProps {
   setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
   finalScreenActive: string;
+  availableBalance: number | undefined;
 }
 
 function FinalScreen(props: FinalScreenProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [transactionFinished, setTransactionFinished] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -30,19 +32,19 @@ function FinalScreen(props: FinalScreenProps) {
       >
         <div className="flex flex-col gap-[30px] h-full">
           <div className="w-full flex items-center justify-between text-[24px] text-[#FF007A]">
-            {props.finalScreenActive === "Claim Rewards" && (
-              <p>Claim Rewards</p>
+            {props.finalScreenActive === "Claim Rewards" &&
+              !transactionFinished && <p>Claim Rewards</p>}
+            {props.finalScreenActive === "Withdraw tokens" &&
+              !transactionFinished && <p>Withdraw Tokens</p>}
+            {props.finalScreenActive === "Deposit" && !transactionFinished && (
+              <p>Deposit Tokens</p>
             )}
-            {props.finalScreenActive === "Withdraw tokens" && (
-              <p>Withdraw Tokens</p>
-            )}
-            {props.finalScreenActive === "Deposit" && <p>Deposit Tokens</p>}
             <button
               onClick={() => {
                 props.setFinalScreenActive("");
               }}
             >
-              <RxCross2 />
+              {!transactionFinished && <RxCross2 />}
             </button>
           </div>
           {props.finalScreenActive === "Claim Rewards" && (
@@ -51,7 +53,14 @@ function FinalScreen(props: FinalScreenProps) {
           {props.finalScreenActive === "Withdraw tokens" && (
             <WithdrawTokensScreen />
           )}
-          {props.finalScreenActive === "Deposit" && <DepositTokensScreen />}
+          {props.finalScreenActive === "Deposit" && (
+            <DepositTokensScreen
+              availableBalance={props.availableBalance}
+              transactionFinished={transactionFinished}
+              setFinalScreenActive={props.setFinalScreenActive}
+              setTransactionFinished={setTransactionFinished}
+            />
+          )}
         </div>
       </div>
     </div>

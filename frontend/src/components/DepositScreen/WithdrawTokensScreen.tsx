@@ -9,7 +9,10 @@ function WithdrawTokensScreen() {
           <p className="text-[13px]">Available to withdraw: 0.079</p>
         </div>
         <div className="flex w-full justify-between items-center">
-          <p className="font-semibold text-[36px] opacity-70">0.0</p>
+          <input
+            className="font-semibold text-[36px] opacity-70 w-[150px] outline-none"
+            placeholder="0.0"
+          />
           <div className="flex items-center gap-[10px]">
             <button className="px-[10px] py-[5px] bg-[#FF007A] rounded-lg text-[#ffff] font-bold tracking-wider text-[14px]">
               MAX
