@@ -13,9 +13,11 @@ import FinalScreen from "./components/DepositScreen/FinalScreen";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchAvailableBalance } from "./utils/fetchAvailableBalance";
+import { fetchTotalDeposit } from "./utils/fetchTotalDeposit";
 
 function App() {
   const [isPanelVisible, setPanelVisible] = useState<boolean>(false);
+  const [totalDeposited, setTotalDeposited] = useState<number | undefined>(0);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [depositActive, setDepositActive] = useState<boolean>(false);
   const [accountWindowActive, setAccountWindowActive] =
@@ -52,6 +54,13 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const fetchTotalDeposits = async () => {
+      const totalDeposited = await fetchTotalDeposit(chainId);
+      setTotalDeposited(totalDeposited);
+    };
+
+    fetchTotalDeposits();
+
     if (active) {
       const fetchBalance = async () => {
         const balance = await fetchAvailableBalance(chainId, account);
@@ -87,11 +96,17 @@ function App() {
         setDepositActive={setDepositActive}
         setAccountWindowActive={setAccountWindowActive}
       />
-      {!depositActive && <StakingPool setDepositActive={setDepositActive} />}
+      {!depositActive && (
+        <StakingPool
+          setDepositActive={setDepositActive}
+          totalDeposited={totalDeposited}
+        />
+      )}
       {depositActive && (
         <DepositScreen
           setFinalScreenActive={setFinalScreenActive}
           isPanelVisible={isPanelVisible}
+          totalDeposited={totalDeposited}
         />
       )}
       {finalScreenActive !== "" && (

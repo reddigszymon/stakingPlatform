@@ -6,19 +6,22 @@ import { mintTokens } from "../../utils/mintTokens";
 
 interface StakingPoolInterface {
   setDepositActive: React.Dispatch<React.SetStateAction<boolean>>;
+  totalDeposited: number | undefined;
 }
-
-const poolData = {
-  name: "UNI Staking Pool",
-  endTime: "330:23:43:15",
-  tokenImage: uniToken,
-  tokenName: "UNI",
-  totalDeposited: "5.79M / 20.00 M UNI",
-  poolRate: "42%",
-};
 
 function StakingPool(props: StakingPoolInterface) {
   const { account, active, chainId } = useWeb3React<Web3Provider>();
+  const poolData = {
+    name: "UNI Staking Pool",
+    endTime: "330:23:43:15",
+    tokenImage: uniToken,
+    tokenName: "UNI",
+    totalDeposited:
+      props.totalDeposited === undefined
+        ? 0
+        : (props.totalDeposited / 10 ** 18).toFixed(2) + " / 20.00 M UNI",
+    poolRate: "42%",
+  };
 
   return (
     <div className="flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold z-[-1] md:z-[10] ">

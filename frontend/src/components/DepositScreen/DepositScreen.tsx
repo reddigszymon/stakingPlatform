@@ -5,6 +5,7 @@ import ButtonDeposit from "./DepositButton/ButtonDeposit";
 interface DepositScreenProps {
   setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
   isPanelVisible: boolean;
+  totalDeposited: number | undefined;
 }
 
 function DepositScreen(props: DepositScreenProps) {
@@ -22,7 +23,14 @@ function DepositScreen(props: DepositScreenProps) {
         <div className="w-[45%] px-[15px] py-[10px] bg-[#FCE9F7] flex flex-col gap-[5px] rounded-md">
           <p>Total deposits</p>
           <div className="flex w-full justify-between items-center">
-            <p>5.79 M / 20.00 M</p>
+            <p>
+              <span>
+                {props.totalDeposited === undefined
+                  ? 0
+                  : (props.totalDeposited / 10 ** 18).toFixed(2)}
+              </span>{" "}
+              / 20.00 M
+            </p>
             <p>UNI</p>
           </div>
         </div>
