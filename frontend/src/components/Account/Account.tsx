@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import blockies from "ethereum-blockies-base64";
@@ -14,11 +14,22 @@ function Account() {
   const dispatch = useDispatch();
   const { account, chainId, deactivate, active } = useWeb3React<Web3Provider>();
 
+  const [isVisible, setIsVisible] = useState(false);
+
   const avatar = account ? blockies(account) : "";
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   return (
     <div className=" w-full h-full flex items-center justify-center bg-[#050934] bg-opacity-[75%] fixed z-50">
-      <div className="bg-[white] w-[450px] h-[270px] p-[20px] border-2 shadow-lg rounded-lg flex flex-col gap-[20px] justify-between">
+      <div
+        className={`bg-[white] w-[450px] h-[270px] p-[20px] border-2 shadow-lg rounded-lg flex flex-col gap-[20px] justify-between transition-all duration-100 ease-in-out transform-gpu ${
+          isVisible ? "scale-100" : "scale-[90%]"
+        } 
+      transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);`}
+      >
         <div className="flex flex-col gap-[30px]">
           <div className="w-full flex justify-between items-center">
             <p className="font-semibold text-[18px]">Account</p>

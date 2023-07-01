@@ -1,8 +1,11 @@
 import { initializeContract } from "./initializeContract";
 import polygonStaking from "../assets/abis/polygonStaking.json";
 import goerliStaking from "../assets/abis/goerliStaking.json";
+import { fetchTotalDeposit } from "./fetchTotalDeposit";
 
-export const fetchPoolLimit = async (chainId: number | undefined) => {
+export const fetchAPR = async (chainId: number | undefined) => {
+  const totalDeposit = await fetchTotalDeposit(chainId);
+
   const contractAddress =
     chainId === 5
       ? "0xb1023Ef4e6cd4757b509D7679aaB96291E4DB8Fa"
@@ -13,9 +16,16 @@ export const fetchPoolLimit = async (chainId: number | undefined) => {
   const contract = await initializeContract(abi, contractAddress, false);
 
   try {
-    const poolLimit = await contract.getPoolLimit();
-    return parseFloat(poolLimit.toString());
+    const rewardRate = await contract.getRewardRate();
+    if (totalDeposit !== undefined) {
+      const apr =
+        (parseFloat(rewardRate.toString()) * 31536000 * 10 ** 18) /
+        parseFloat(totalDeposit?.toString());
+      return apr;
+    } else {
+      return 0;
+    }
   } catch (error) {
-    console.error("Error fetching total tokens", error);
+    console.error("Error calculating APR:", error);
   }
 };

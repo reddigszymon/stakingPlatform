@@ -8,7 +8,7 @@ import { initializeContract } from "./initializeContract";
 export const withdrawTokens = async (
   active: boolean,
   chainId: number | undefined,
-  amount: number
+  amount: string
 ) => {
   if (!active) {
     displayErrorToast("Please connect your account first!");
@@ -29,11 +29,13 @@ export const withdrawTokens = async (
 
     const contract = await initializeContract(abi, contractAddress);
 
-    const amountToWithdraw = ethers.parseEther(amount.toString());
+    const amountToWithdraw = ethers.parseUnits(amount, 18);
 
     const tx = await contract.withdraw(amountToWithdraw);
 
     await tx.wait();
+
+    return tx.hash;
   } catch (error) {
     console.error("Error withdrawing tokens:", error);
   }

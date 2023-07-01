@@ -62,15 +62,6 @@ function App() {
 
   useEffect(() => {
     updateInfo(dispatch, chainId, active, account);
-
-    if (active) {
-      const fetchBalance = async () => {
-        const balance = await fetchAvailableBalance(chainId, account);
-        dispatch(setAvailableBalance(balance));
-      };
-
-      fetchBalance();
-    }
   }, [active, depositActive]);
 
   return (

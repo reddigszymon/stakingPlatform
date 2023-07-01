@@ -1,12 +1,50 @@
+import { useEffect } from "react";
 import uniToken from "../../assets/images/uniToken.svg";
 import ButtonDeposit from "./DepositButton/ButtonDeposit";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
+import { formatNumber } from "../../utils/formatNumber";
+import { fetchEarned } from "../../utils/fetchEarned";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import { useDispatch } from "react-redux";
+
+import { setEarned } from "../../reducers/appReducer";
 
 function DepositScreen() {
-  const { isPanelVisible, totalDeposited } = useSelector(
-    (state: RootState) => state.app
-  );
+  const {
+    isPanelVisible,
+    totalDeposited,
+    poolLimit,
+    apr,
+    userDeposit,
+    earned,
+  } = useSelector((state: RootState) => state.app);
+  const dispatch = useDispatch();
+
+  const { account, active, chainId } = useWeb3React<Web3Provider>();
+
+  const totalDepositedFormatted =
+    totalDeposited !== undefined ? formatNumber(totalDeposited) : "0";
+  const poolLimitFormatted =
+    poolLimit !== undefined ? formatNumber(poolLimit) : "0";
+
+  useEffect(() => {
+    // Function to fetch the earned amount and update the state
+    const updateEarned = async () => {
+      const fetchedEarned = await fetchEarned(active, chainId, account);
+      dispatch(setEarned(fetchedEarned));
+    };
+
+    // Call the function immediately to update the state
+    updateEarned();
+
+    // Set up an interval to call the function every 0.5 second
+    const interval = setInterval(updateEarned, 500);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [active, chainId, account]);
 
   return (
     <div
@@ -23,55 +61,38 @@ function DepositScreen() {
           <p>Total deposits</p>
           <div className="flex w-full justify-between items-center">
             <p>
-              <span>
-                {totalDeposited === undefined
-                  ? 0
-                  : (totalDeposited / 10 ** 18).toFixed(2)}
-              </span>{" "}
-              / 20.00 M
+              {totalDeposited === undefined || poolLimit === undefined
+                ? "0"
+                : `${totalDepositedFormatted} / ${poolLimitFormatted}`}
             </p>
             <p>UNI</p>
           </div>
         </div>
         <div className="w-[45%] px-[15px] py-[10px] bg-[#FCE9F7] flex flex-col gap-[5px] rounded-md">
           <p>Annual Percentage Rate</p>
-          <p>42%</p>
+          <p>{`${apr === undefined ? 0 : (apr / 10 ** 18).toFixed(2)}%`}</p>
         </div>
       </div>
       <div>
         <div className="w-full bg-[#FADCF2] px-[15px] py-[10px] rounded-t-md">
           <p className="mb-[10px]">Your UNI deposits</p>
           <div className="flex w-full justify-between items-center">
-            <p>0.00000</p>
+            <p>{active ? (userDeposit / 10 ** 18).toFixed(4) : "0.0000"}</p>
             <p>UNI</p>
           </div>
         </div>
         <div className="w-full bg-[#DFD8DD] px-[15px] py-[10px] rounded-b-md opacity-[75%]">
           <p className="mb-[10px] opacity-[50%]">Your earned UNI</p>
           <div className="flex w-full justify-between items-center opacity-[50%]">
-            <p>0.00000</p>
+            <p>{(earned / 10 ** 18).toFixed(4)}</p>
             <p>UNI</p>
           </div>
         </div>
       </div>
       <div className="w-full flex items-center justify-center gap-[15px] mt-[25px] text-[12px] sm:text-[14px] md:text-[16px]">
-        <ButtonDeposit
-          text="Claim Rewards"
-          opacity={25}
-          // contractFunction={() => claimRewards(active, chainId)}
-        />
-        <ButtonDeposit
-          text="Withdraw tokens"
-          opacity={50}
-
-          // contractFunction={() => withdrawTokens(active, chainId, 0.0001)}
-        />
-        <ButtonDeposit
-          text="Deposit"
-          opacity={75}
-
-          // contractFunction={() => depositTokens(active, chainId, 0.0001)}
-        />
+        <ButtonDeposit text="Claim Rewards" opacity={25} />
+        <ButtonDeposit text="Withdraw tokens" opacity={50} />
+        <ButtonDeposit text="Deposit" opacity={75} />
       </div>
     </div>
   );

@@ -29,8 +29,6 @@ export const depositTokens = async (
 
     const contract = await initializeContract(abi, contractAddress);
 
-    // const amountToStake = ethers.parseEther(amount.toString());
-
     const amountToStake = ethers.parseUnits(amount, 18);
 
     const tx = await contract.stake(amountToStake);

@@ -8,6 +8,12 @@ interface AppState {
   accountWindowActive: boolean;
   finalScreenActive: string;
   availableBalance: number | undefined;
+  poolLimit: number | undefined;
+  timeLeft: number | undefined;
+  apr: number | undefined;
+  countdown: number;
+  userDeposit: number;
+  earned: number;
 }
 
 const initialState: AppState = {
@@ -18,6 +24,12 @@ const initialState: AppState = {
   accountWindowActive: false,
   finalScreenActive: "",
   availableBalance: 0,
+  poolLimit: 0,
+  timeLeft: 0,
+  apr: 0,
+  countdown: 0,
+  userDeposit: 0,
+  earned: 0,
 };
 
 const appSlice = createSlice({
@@ -26,6 +38,9 @@ const appSlice = createSlice({
   reducers: {
     setPanelVisible(state, action: PayloadAction<boolean>) {
       state.isPanelVisible = action.payload;
+    },
+    setPoolLimit(state, action: PayloadAction<number | undefined>) {
+      state.poolLimit = action.payload;
     },
     setTotalDeposited(state, action: PayloadAction<number | undefined>) {
       state.totalDeposited = action.payload;
@@ -45,6 +60,24 @@ const appSlice = createSlice({
     setAvailableBalance(state, action: PayloadAction<number | undefined>) {
       state.availableBalance = action.payload;
     },
+    setTimeLeft(state, action: PayloadAction<number | undefined>) {
+      state.timeLeft = action.payload;
+    },
+    setApr(state, action: PayloadAction<number | undefined>) {
+      state.apr = action.payload;
+    },
+    setCountdown(state, action: PayloadAction<number>) {
+      state.countdown = action.payload;
+    },
+    decrementCountdown(state) {
+      state.countdown -= 1;
+    },
+    setUserDeposit(state, action: PayloadAction<number>) {
+      state.userDeposit = action.payload;
+    },
+    setEarned(state, action: PayloadAction<number>) {
+      state.earned = action.payload;
+    },
   },
 });
 
@@ -56,6 +89,13 @@ export const {
   setAccountWindowActive,
   setFinalScreenActive,
   setAvailableBalance,
+  setPoolLimit,
+  setTimeLeft,
+  setApr,
+  setCountdown,
+  decrementCountdown,
+  setUserDeposit,
+  setEarned,
 } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import ClaimRewardsScreen from "./ClaimRewardsScreen";
-import WithdrawTokensScreen from "./WithdrawTokensScreen";
+import WithdrawTokensScreen from "./WithdrawButton/WithdrawTokensScreen";
 import DepositTokensScreen from "./DepositButton/DepositTokensScreen";
 import { useDispatch } from "react-redux";
 import { setFinalScreenActive } from "../../reducers/appReducer";
@@ -52,7 +52,12 @@ function FinalScreen() {
             </button>
           </div>
           {finalScreenActive === "Claim Rewards" && <ClaimRewardsScreen />}
-          {finalScreenActive === "Withdraw tokens" && <WithdrawTokensScreen />}
+          {finalScreenActive === "Withdraw tokens" && (
+            <WithdrawTokensScreen
+              transactionFinished={transactionFinished}
+              setTransactionFinished={setTransactionFinished}
+            />
+          )}
           {finalScreenActive === "Deposit" && (
             <DepositTokensScreen
               transactionFinished={transactionFinished}
