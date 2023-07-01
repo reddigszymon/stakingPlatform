@@ -1,19 +1,18 @@
 import { motion } from "framer-motion";
 import React from "react";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 interface PanelAnimationProps {
-  windowWidth: number;
   children: React.ReactNode;
   onClick: (event: React.MouseEvent) => void;
-  setPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PanelAnimation: React.FC<PanelAnimationProps> = ({
-  windowWidth,
   children,
   onClick,
-  setPanelVisible,
 }) => {
+  const { windowWidth } = useSelector((state: RootState) => state.app);
   return (
     <motion.div
       initial={windowWidth <= 640 ? { y: "100vh" } : { x: "100vw" }}

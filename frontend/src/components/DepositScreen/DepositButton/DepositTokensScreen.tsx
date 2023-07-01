@@ -6,33 +6,41 @@ import { Web3Provider } from "@ethersproject/providers";
 import { approveTokens } from "../../../utils/approveTokens";
 import ClipLoader from "react-spinners/ClipLoader";
 import TransactionFinished from "./TransactionFinished";
+import { RootState } from "../../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { updateInfo } from "../../../utils/updateInfo";
 
 interface DepositTokensScreenProps {
-  availableBalance: number | undefined;
   transactionFinished: boolean;
-  setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
   setTransactionFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function DepositTokensScreen(props: DepositTokensScreenProps) {
+  const { availableBalance } = useSelector((state: RootState) => state.app);
+  const dispatch = useDispatch();
+
   const { active, chainId, account } = useWeb3React<Web3Provider>();
 
   const [inputValue, setInputValue] = useState<string>("");
   const [transactionActive, setTransactionActive] = useState(false);
+  const [approvalPending, setApprovalPending] = useState(false);
   const [txHash, setTxHash] = useState("");
 
   const handleDeposit = async () => {
     if (
-      props.availableBalance !== undefined &&
+      availableBalance !== undefined &&
       parseFloat(inputValue) > 0 &&
       parseFloat(inputValue) <=
-        parseFloat((props.availableBalance / 10 ** 18).toFixed(2))
+        parseFloat((availableBalance / 10 ** 18).toFixed(2))
     ) {
       setTransactionActive(true);
       try {
+        setApprovalPending(true);
         await approveTokens(chainId, inputValue);
+        setApprovalPending(false);
         const hash = await depositTokens(active, chainId, inputValue);
         setTxHash(hash);
+        updateInfo(dispatch, chainId, active, account);
         props.setTransactionFinished(true);
         setTransactionActive(false);
       } catch (error) {
@@ -51,9 +59,9 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
               <p className="text-[13px]">
                 Available to deposit:{" "}
                 <span>
-                  {props.availableBalance === undefined
+                  {availableBalance === undefined
                     ? "0.00"
-                    : (props.availableBalance / 10 ** 18).toFixed(2)}
+                    : (availableBalance / 10 ** 18).toFixed(2)}
                 </span>
               </p>
             </div>
@@ -74,9 +82,9 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
                 <button
                   onClick={() =>
                     setInputValue(
-                      props.availableBalance === undefined
+                      availableBalance === undefined
                         ? "0.00"
-                        : (props.availableBalance / 10 ** 18).toFixed(2)
+                        : (availableBalance / 10 ** 18).toFixed(2)
                     )
                   }
                   className="px-[10px] py-[5px] bg-[#FF007A] rounded-lg text-[#ffff] font-bold tracking-wider text-[14px]"
@@ -96,10 +104,10 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
             <button
               onClick={() => handleDeposit()}
               className={`py-[10px] ${
-                props.availableBalance !== undefined &&
+                availableBalance !== undefined &&
                 parseFloat(inputValue) > 0 &&
                 parseFloat(inputValue) <=
-                  parseFloat((props.availableBalance / 10 ** 18).toFixed(2))
+                  parseFloat((availableBalance / 10 ** 18).toFixed(2))
                   ? "bg-[#FF007A]"
                   : "bg-[gray]"
               }  text-[#fff] opacity-90 w-full rounded-lg font-bold tracking-wide`}
@@ -110,15 +118,18 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
         </div>
       )}
       {transactionActive && !props.transactionFinished && (
-        <div className="w-full h-full flex items-center justify-center">
-          <ClipLoader color="#a8bcb8" size={80} />
+        <div className="w-full h-full flex items-center justify-center flex-col">
+          <div className="mb-[40px]">
+            <ClipLoader color="#a8bcb8" size={90} />
+          </div>
+          <div className="flex flex-col gap-[5px] items-center">
+            <p>{approvalPending ? "Approval" : "Transaction"} is pending...</p>
+            <p>Please do not close this window</p>
+          </div>
         </div>
       )}
       {props.transactionFinished && !transactionActive && (
-        <TransactionFinished
-          hash={txHash}
-          setFinalScreenActive={props.setFinalScreenActive}
-        />
+        <TransactionFinished hash={txHash} />
       )}
     </>
   );

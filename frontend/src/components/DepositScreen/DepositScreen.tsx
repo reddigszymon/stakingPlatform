@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
 import uniToken from "../../assets/images/uniToken.svg";
 import ButtonDeposit from "./DepositButton/ButtonDeposit";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
-interface DepositScreenProps {
-  setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
-  isPanelVisible: boolean;
-  totalDeposited: number | undefined;
-}
+function DepositScreen() {
+  const { isPanelVisible, totalDeposited } = useSelector(
+    (state: RootState) => state.app
+  );
 
-function DepositScreen(props: DepositScreenProps) {
   return (
     <div
       className={`flex w-[90%] max-w-[600px] lg:max-w-[700px] flex-col gap-[5px] font-bold ${
-        props.isPanelVisible ? "z-[-1]" : "z-[1]"
+        isPanelVisible ? "z-[-1]" : "z-[1]"
       } md:z-[10] text-[12px] sm:text-[16px] md:text-[18px]`}
     >
       <div className="flex w-full justify-between items-center mb-[10px]">
@@ -25,9 +24,9 @@ function DepositScreen(props: DepositScreenProps) {
           <div className="flex w-full justify-between items-center">
             <p>
               <span>
-                {props.totalDeposited === undefined
+                {totalDeposited === undefined
                   ? 0
-                  : (props.totalDeposited / 10 ** 18).toFixed(2)}
+                  : (totalDeposited / 10 ** 18).toFixed(2)}
               </span>{" "}
               / 20.00 M
             </p>
@@ -59,20 +58,17 @@ function DepositScreen(props: DepositScreenProps) {
         <ButtonDeposit
           text="Claim Rewards"
           opacity={25}
-          setFinalScreenActive={props.setFinalScreenActive}
           // contractFunction={() => claimRewards(active, chainId)}
         />
         <ButtonDeposit
           text="Withdraw tokens"
           opacity={50}
-          setFinalScreenActive={props.setFinalScreenActive}
 
           // contractFunction={() => withdrawTokens(active, chainId, 0.0001)}
         />
         <ButtonDeposit
           text="Deposit"
           opacity={75}
-          setFinalScreenActive={props.setFinalScreenActive}
 
           // contractFunction={() => depositTokens(active, chainId, 0.0001)}
         />

@@ -7,12 +7,11 @@ import { BiCopy } from "react-icons/bi";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 import { copyToClipboard } from "../../utils/copyToClipboard";
 import { redirectToChainExplorer } from "../../utils/redirectToExplorer";
+import { useDispatch } from "react-redux";
+import { setAccountWindowActive } from "../../reducers/appReducer";
 
-interface AccountProps {
-  setAccountWindowActive: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Account(props: AccountProps) {
+function Account() {
+  const dispatch = useDispatch();
   const { account, chainId, deactivate, active } = useWeb3React<Web3Provider>();
 
   const avatar = account ? blockies(account) : "";
@@ -23,7 +22,7 @@ function Account(props: AccountProps) {
         <div className="flex flex-col gap-[30px]">
           <div className="w-full flex justify-between items-center">
             <p className="font-semibold text-[18px]">Account</p>
-            <button onClick={() => props.setAccountWindowActive(false)}>
+            <button onClick={() => dispatch(setAccountWindowActive(false))}>
               <img
                 src={cross}
                 alt="Cross Icon"
@@ -36,7 +35,7 @@ function Account(props: AccountProps) {
               <p className="font-semibold text-[18px]">Connected with</p>
               <button
                 onClick={() => {
-                  props.setAccountWindowActive(false);
+                  dispatch(setAccountWindowActive(false));
                   deactivate();
                 }}
                 className="bg-[red] bg-opacity-[70%] text-[#fff] px-[10px] py-[5px] rounded-md font-bold"

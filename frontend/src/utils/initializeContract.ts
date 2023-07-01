@@ -1,10 +1,15 @@
 import { ethers } from "ethers";
 
-export const initializeContract = async (abi: any, contractAddress: string) => {
+export const initializeContract = async (
+  abi: any,
+  contractAddress: string,
+  needSigner = true
+) => {
   const provider = new ethers.BrowserProvider(window.ethereum);
-  const signer = await provider.getSigner();
-
-  const contract = new ethers.Contract(contractAddress, abi, signer);
-
-  return contract;
+  if (needSigner) {
+    const signer = await provider.getSigner();
+    return new ethers.Contract(contractAddress, abi, signer);
+  } else {
+    return new ethers.Contract(contractAddress, abi, provider);
+  }
 };

@@ -2,14 +2,17 @@ import React from "react";
 import { displayErrorToast } from "../../../utils/toastErrorUtils";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
+import { useDispatch } from "react-redux";
+import { setFinalScreenActive } from "../../../reducers/appReducer";
+
 interface ButtonDepositProps {
   opacity: Number;
   text: string;
-  setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
   // contractFunction: () => void;
 }
 
 function ButtonDeposit(props: ButtonDepositProps) {
+  const dispatch = useDispatch();
   const { active, chainId } = useWeb3React<Web3Provider>();
 
   const handleClick = () => {
@@ -21,7 +24,7 @@ function ButtonDeposit(props: ButtonDepositProps) {
       displayErrorToast("Please switch your chain to either Mumbai or Goerli!");
       return;
     }
-    props.setFinalScreenActive(props.text);
+    dispatch(setFinalScreenActive(props.text));
   };
 
   return (

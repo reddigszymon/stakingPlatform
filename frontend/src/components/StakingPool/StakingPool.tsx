@@ -3,13 +3,15 @@ import uniToken from "../../assets/images/uniToken.svg";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { mintTokens } from "../../utils/mintTokens";
+import { useDispatch } from "react-redux";
+import { setDepositActive } from "../../reducers/appReducer";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
-interface StakingPoolInterface {
-  setDepositActive: React.Dispatch<React.SetStateAction<boolean>>;
-  totalDeposited: number | undefined;
-}
+function StakingPool() {
+  const dispatch = useDispatch();
+  const { totalDeposited } = useSelector((state: RootState) => state.app);
 
-function StakingPool(props: StakingPoolInterface) {
   const { account, active, chainId } = useWeb3React<Web3Provider>();
   const poolData = {
     name: "UNI Staking Pool",
@@ -17,9 +19,9 @@ function StakingPool(props: StakingPoolInterface) {
     tokenImage: uniToken,
     tokenName: "UNI",
     totalDeposited:
-      props.totalDeposited === undefined
+      totalDeposited === undefined
         ? 0
-        : (props.totalDeposited / 10 ** 18).toFixed(2) + " / 20.00 M UNI",
+        : (totalDeposited / 10 ** 18).toFixed(2) + " / 20.00 M UNI",
     poolRate: "42%",
   };
 
@@ -40,7 +42,7 @@ function StakingPool(props: StakingPoolInterface) {
             <p className="text-[18px] lg:text-[22px]">{poolData.tokenName}</p>
           </div>
           <button
-            onClick={() => props.setDepositActive(true)}
+            onClick={() => dispatch(setDepositActive(true))}
             className="bg-[#FF007A] text-[#FF007A] text-opacity-[90%] cursor-pointer bg-opacity-[25%] py-[10px] lg:py-[15px] px-[20px] lg:px-[25px] rounded-2xl font-bold text-[18px]"
           >
             Deposit

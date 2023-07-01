@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store";
 import { AnimatePresence } from "framer-motion";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { ToastContainer } from "react-toastify";
+import { fetchAvailableBalance } from "./utils/fetchAvailableBalance";
+import { updateInfo } from "./utils/updateInfo";
 import Navbar from "./components/Navbar/Navbar";
 import WalletConnectWrapper from "./components/Navbar/WalletConnectWrapper";
 import StakingPool from "./components/StakingPool/StakingPool";
@@ -12,30 +16,33 @@ import PanelAnimation from "./components/Navbar/PanelAnimation";
 import FinalScreen from "./components/DepositScreen/FinalScreen";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchAvailableBalance } from "./utils/fetchAvailableBalance";
-import { fetchTotalDeposit } from "./utils/fetchTotalDeposit";
+
+import {
+  setPanelVisible,
+  setWindowWidth,
+  setAvailableBalance,
+} from "./reducers/appReducer";
 
 function App() {
-  const [isPanelVisible, setPanelVisible] = useState<boolean>(false);
-  const [totalDeposited, setTotalDeposited] = useState<number | undefined>(0);
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const [depositActive, setDepositActive] = useState<boolean>(false);
-  const [accountWindowActive, setAccountWindowActive] =
-    useState<boolean>(false);
-  const [finalScreenActive, setFinalScreenActive] = useState("");
-  const [availableBalance, setAvailableBalance] = useState<number | undefined>(
-    0
-  );
+  const dispatch = useDispatch();
+
+  const {
+    isPanelVisible,
+    windowWidth,
+    depositActive,
+    accountWindowActive,
+    finalScreenActive,
+  } = useSelector((state: RootState) => state.app);
 
   const { active, chainId, account } = useWeb3React<Web3Provider>();
 
   const togglePanel = () => {
-    setPanelVisible(!isPanelVisible);
+    dispatch(setPanelVisible(!isPanelVisible));
   };
 
   const handleClosePanel = () => {
     if (isPanelVisible) {
-      setPanelVisible(false);
+      dispatch(setPanelVisible(false));
     }
   };
 
@@ -45,7 +52,7 @@ function App() {
 
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+      dispatch(setWindowWidth(window.innerWidth));
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -54,22 +61,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const fetchTotalDeposits = async () => {
-      const totalDeposited = await fetchTotalDeposit(chainId);
-      setTotalDeposited(totalDeposited);
-    };
-
-    fetchTotalDeposits();
+    updateInfo(dispatch, chainId, active, account);
 
     if (active) {
       const fetchBalance = async () => {
         const balance = await fetchAvailableBalance(chainId, account);
-        setAvailableBalance(balance);
+        dispatch(setAvailableBalance(balance));
       };
 
       fetchBalance();
     }
-  }, [active]);
+  }, [active, depositActive]);
 
   return (
     <div
@@ -82,45 +84,20 @@ function App() {
 
       <AnimatePresence>
         {isPanelVisible && (
-          <PanelAnimation
-            windowWidth={windowWidth}
-            onClick={handlePanelClick}
-            setPanelVisible={setPanelVisible}
-          >
-            <WalletConnectWrapper setPanelVisible={setPanelVisible} />
+          <PanelAnimation onClick={handlePanelClick}>
+            <WalletConnectWrapper />
           </PanelAnimation>
         )}
       </AnimatePresence>
-      <Navbar
-        togglePanel={togglePanel}
-        setDepositActive={setDepositActive}
-        setAccountWindowActive={setAccountWindowActive}
-      />
-      {!depositActive && (
-        <StakingPool
-          setDepositActive={setDepositActive}
-          totalDeposited={totalDeposited}
-        />
-      )}
-      {depositActive && (
-        <DepositScreen
-          setFinalScreenActive={setFinalScreenActive}
-          isPanelVisible={isPanelVisible}
-          totalDeposited={totalDeposited}
-        />
-      )}
-      {finalScreenActive !== "" && (
-        <FinalScreen
-          finalScreenActive={finalScreenActive}
-          setFinalScreenActive={setFinalScreenActive}
-          availableBalance={availableBalance}
-        />
-      )}
+      <Navbar togglePanel={togglePanel} />
+      {!depositActive && <StakingPool />}
+      {depositActive && <DepositScreen />}
+      {finalScreenActive !== "" && <FinalScreen />}
       {accountWindowActive &&
         active &&
         (chainId === 80001 || chainId === 5) && (
           <div className="h-screen w-full absolute">
-            <Account setAccountWindowActive={setAccountWindowActive} />
+            <Account />
           </div>
         )}
     </div>

@@ -3,13 +3,14 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { redirectToTransaction } from "../../../utils/redirectToTransaction";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-
+import { useDispatch } from "react-redux";
+import { setFinalScreenActive } from "../../../reducers/appReducer";
 interface TransactionFinished {
   hash: string;
-  setFinalScreenActive: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function TransactionFinished(props: TransactionFinished) {
+  const dispatch = useDispatch();
   const { chainId } = useWeb3React<Web3Provider>();
 
   return (
@@ -20,7 +21,7 @@ function TransactionFinished(props: TransactionFinished) {
       </div>
       <div className="w-full flex flex-col gap-[10px]">
         <button
-          onClick={() => props.setFinalScreenActive("")}
+          onClick={() => dispatch(setFinalScreenActive(""))}
           className="bg-[seagreen] w-full rounded-lg py-[10px] font-bold"
         >
           Close Window

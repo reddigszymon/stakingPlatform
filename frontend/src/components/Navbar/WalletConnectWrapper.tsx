@@ -5,10 +5,6 @@ import walletConnect from "../../assets/images/walletConnect.svg";
 import coinbaseWallet from "../../assets/images/coinbaseWallet.svg";
 import WalletConnectDiv from "./WalletConnectDiv";
 
-interface WalletConnectWrapperProps {
-  setPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 const wallets = [
   { name: "Metamask", logo: metamaskLogo },
   { name: "Portis", logo: portis },
@@ -16,7 +12,7 @@ const wallets = [
   { name: "Coinbase Wallet", logo: coinbaseWallet },
 ];
 
-function WalletConnectWrapper(props: WalletConnectWrapperProps) {
+function WalletConnectWrapper() {
   return (
     <div className="flex flex-col gap-[20px] w-full px-[20px] pt-[20px]">
       <h1 className="font-semibold">Connect to a wallet</h1>
@@ -26,7 +22,6 @@ function WalletConnectWrapper(props: WalletConnectWrapperProps) {
             key={wallet.name}
             image={wallet.logo}
             text={wallet.name}
-            setPanelVisible={props.setPanelVisible}
           />
         ))}
       </div>

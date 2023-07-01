@@ -10,7 +10,7 @@ export const fetchTotalDeposit = async (chainId: number | undefined) => {
 
   const abi = chainId === 5 ? goerliStaking : polygonStaking;
 
-  const contract = await initializeContract(abi, contractAddress);
+  const contract = await initializeContract(abi, contractAddress, false);
 
   try {
     const totalDeposited = await contract.getTotalSupply();

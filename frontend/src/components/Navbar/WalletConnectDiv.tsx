@@ -2,14 +2,16 @@ import React from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import useWalletConnectors from "../../utils/useWalletConnectors";
+import { useDispatch } from "react-redux";
+import { setPanelVisible } from "../../reducers/appReducer";
 
 interface WalletConnectDivProps {
   image: string;
   text: string;
-  setPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function WalletConnectDiv(props: WalletConnectDivProps) {
+  const dispatch = useDispatch();
   const connectors = useWalletConnectors();
   const { activate } = useWeb3React<Web3Provider>();
 
@@ -28,7 +30,7 @@ function WalletConnectDiv(props: WalletConnectDivProps) {
 
       if (connector) {
         await activate(connector);
-        props.setPanelVisible(false);
+        dispatch(setPanelVisible(false));
       }
     } catch (error) {
       console.error("Failed to connect wallet", error);

@@ -7,16 +7,18 @@ import { Web3Provider } from "@ethersproject/providers";
 import blockies from "ethereum-blockies-base64";
 import { BiError } from "react-icons/bi";
 import ChainDropDown from "./ChainDropDown";
+import { useDispatch } from "react-redux";
+import { setAccountWindowActive } from "../../reducers/appReducer";
 
 const ETHEREUM_ID = 5;
 const POLYGON_ID = 80001;
 
 interface ConnectButtonProps {
   togglePanel: () => void;
-  setAccountWindowActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function ConnectButton(props: ConnectButtonProps) {
+  const dispatch = useDispatch();
   const { active, account, chainId } = useWeb3React<Web3Provider>();
   const avatar = account ? blockies(account) : "";
   const [dropDownActive, setDropDownActive] = useState(false);
@@ -66,7 +68,7 @@ function ConnectButton(props: ConnectButtonProps) {
       )}
       {active && (
         <button
-          onClick={() => props.setAccountWindowActive(true)}
+          onClick={() => dispatch(setAccountWindowActive(true))}
           className="bg-[#F5F6FC]  text-opacity-[90%] py-[8px] px-[12px] rounded-2xl font-bold flex items-center gap-[10px]"
         >
           <img
