@@ -6,9 +6,9 @@ This project is a staking platform for crypto tokens. It is designed specificall
 
 ## Live Preview
 
-[![unistake.png](https://i.postimg.cc/1XYYSSLZ/unistake.png)](https://postimg.cc/Wqg7mBN9)
-
 # [Live Demo](https://staking-platform-eight.vercel.app/)
+
+[![unistake.png](https://i.postimg.cc/1XYYSSLZ/unistake.png)](https://postimg.cc/Wqg7mBN9)
 
 ## Features
 
