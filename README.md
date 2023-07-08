@@ -4,9 +4,7 @@
 
 This project is a staking platform for crypto tokens. It is designed specifically for one token, but it can be easily cloned and modified to support other tokens for single asset staking.
 
-## Live Preview
-
-# [Live Demo](https://staking-platform-eight.vercel.app/)
+## [Live Demo](https://staking-platform-eight.vercel.app/)
 
 [![unistake.png](https://i.postimg.cc/1XYYSSLZ/unistake.png)](https://postimg.cc/Wqg7mBN9)
 
