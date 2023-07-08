@@ -11,13 +11,13 @@ interface ChainDropDownProps {
 function ChainDropDown(props: ChainDropDownProps) {
   return (
     <div className="absolute dropdown top-[100%] rounded-lg w-[250px] left-[-150%] sm:left-[-460%] shadow-lg bg-[#fff] overflow-hidden">
-      <ChainButton
+      {/* <ChainButton
         chainId={5}
         currentChainId={props.chainId}
         chainName="Goerli Testnet"
         logo={EthereumBlueLogo}
         onClickFunction={switchNetwork}
-      />
+      /> */}
 
       <ChainButton
         chainId={80001}

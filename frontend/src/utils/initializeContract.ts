@@ -5,8 +5,6 @@ export const initializeContract = async (
   contractAddress: string,
   needSigner = true
 ) => {
-  // The URL should be replaced with your own provider's URL
-
   if (needSigner) {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();

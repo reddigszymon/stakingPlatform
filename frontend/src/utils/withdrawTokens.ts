@@ -1,7 +1,5 @@
-import { toast } from "react-toastify";
 import { ethers } from "ethers";
 import polygonStaking from "../assets/abis/polygonStaking.json";
-import goerliStaking from "../assets/abis/goerliStaking.json";
 import { displayErrorToast } from "./toastErrorUtils";
 import { initializeContract } from "./initializeContract";
 
@@ -20,12 +18,9 @@ export const withdrawTokens = async (
   }
 
   try {
-    const contractAddress =
-      chainId === 80001
-        ? "0x13D076Bf577541c699d6E8BD21286BEabc6E7B4b"
-        : "0xb1023Ef4e6cd4757b509D7679aaB96291E4DB8Fa";
+    const contractAddress = "0x13D076Bf577541c699d6E8BD21286BEabc6E7B4b";
 
-    const abi = chainId === 80001 ? polygonStaking : goerliStaking;
+    const abi = polygonStaking;
 
     const contract = await initializeContract(abi, contractAddress);
 

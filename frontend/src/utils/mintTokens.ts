@@ -19,12 +19,9 @@ export const mintTokens = async (
     return;
   }
   try {
-    const contractAddress =
-      chainId === 80001
-        ? "0xC33B9eAfBd636aB4b185675036210A9a254616eC"
-        : "0xd121e33a76157949352d795Ca5965a5320294917";
+    const contractAddress = "0xC33B9eAfBd636aB4b185675036210A9a254616eC";
 
-    const abi = chainId === 80001 ? polygonToken : goerliToken;
+    const abi = polygonToken;
 
     const contract = await initializeContract(abi, contractAddress);
 
