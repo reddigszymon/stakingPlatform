@@ -1,6 +1,4 @@
-# Project Title
-
-Single Asset Staking Platform for cryptocurrency projects.
+# Single Asset Staking Platform for cryptocurrency projects.
 
 ## Description
 
@@ -8,7 +6,7 @@ This project is a staking platform for crypto tokens. It is designed specificall
 
 ## Live Preview
 
-![App Screenshot](https://i.postimg.cc/1XYYSSLZ/unistake.png)
+[![unistake.png](https://i.postimg.cc/1XYYSSLZ/unistake.png)](https://postimg.cc/Wqg7mBN9)
 
 # [Live Demo](https://staking-platform-eight.vercel.app/)
 
