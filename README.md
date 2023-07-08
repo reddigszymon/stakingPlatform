@@ -10,6 +10,8 @@ This project is a staking platform for crypto tokens. It is designed specificall
 
 ![App Screenshot](https://i.postimg.cc/1XYYSSLZ/unistake.png)
 
+# [Live Demo](https://staking-platform-eight.vercel.app/)
+
 ## Features
 
 - Overview of staked tokens, APR, your token deposits, and earned tokens.
