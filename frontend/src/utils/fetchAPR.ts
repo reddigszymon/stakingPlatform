@@ -17,6 +17,7 @@ export const fetchAPR = async (chainId: number | undefined) => {
 
   try {
     const rewardRate = await contract.getRewardRate();
+
     if (totalDeposit !== undefined) {
       const apr =
         (parseFloat(rewardRate.toString()) * 31536000 * 10 ** 18) /

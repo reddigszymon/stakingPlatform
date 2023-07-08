@@ -30,6 +30,8 @@ export const claimRewards = async (
     const tx = await contract.withdrawReward();
 
     await tx.wait();
+
+    return tx;
   } catch (error) {
     console.error("Error claiming tokens:", error);
   }

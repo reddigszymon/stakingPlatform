@@ -9,6 +9,7 @@ import { BiError } from "react-icons/bi";
 import ChainDropDown from "./ChainDropDown";
 import { useDispatch } from "react-redux";
 import { setAccountWindowActive } from "../../reducers/appReducer";
+import useWalletConnectors from "../../utils/useWalletConnectors";
 
 const ETHEREUM_ID = 5;
 const POLYGON_ID = 80001;
@@ -22,6 +23,9 @@ function ConnectButton(props: ConnectButtonProps) {
   const { active, account, chainId } = useWeb3React<Web3Provider>();
   const avatar = account ? blockies(account) : "";
   const [dropDownActive, setDropDownActive] = useState(false);
+  const [updateState, setUpdateState] = useState(false);
+  const { activate } = useWeb3React<Web3Provider>();
+  const { injectedConnector } = useWalletConnectors();
 
   useEffect(() => {
     if (dropDownActive) {
@@ -34,6 +38,48 @@ function ConnectButton(props: ConnectButtonProps) {
       return () => document.removeEventListener("click", closeDropdown);
     }
   }, [dropDownActive]);
+
+  useEffect(() => {
+    const savedAccount = localStorage.getItem("ethereumAccount");
+
+    if (savedAccount) {
+      activate(injectedConnector, undefined, true).catch((error) => {
+        console.log("Failed to activate after reload", error);
+      });
+    }
+  }, [activate, injectedConnector]);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts.length === 0) {
+          // No account is connected
+          setUpdateState((prev) => !prev);
+          // Remove from localStorage
+          localStorage.removeItem("ethereumAccount");
+        } else {
+          // Save account to localStorage
+          localStorage.setItem("ethereumAccount", accounts[0]);
+        }
+      };
+
+      const handleDisconnect = () => {
+        // Remove from localStorage
+        localStorage.removeItem("ethereumAccount");
+      };
+
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      window.ethereum.on("disconnect", handleDisconnect);
+
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+        window.ethereum.removeListener("disconnect", handleDisconnect);
+      };
+    }
+  }, [account, active]);
 
   return (
     <div className="flex items-center gap-[10px] sm500:gap-[30px]">

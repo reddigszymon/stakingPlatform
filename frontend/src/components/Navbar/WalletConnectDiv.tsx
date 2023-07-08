@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import useWalletConnectors from "../../utils/useWalletConnectors";
@@ -13,7 +13,7 @@ interface WalletConnectDivProps {
 function WalletConnectDiv(props: WalletConnectDivProps) {
   const dispatch = useDispatch();
   const connectors = useWalletConnectors();
-  const { activate } = useWeb3React<Web3Provider>();
+  const { activate, account } = useWeb3React<Web3Provider>();
 
   const connectWallet = async () => {
     try {
@@ -36,6 +36,14 @@ function WalletConnectDiv(props: WalletConnectDivProps) {
       console.error("Failed to connect wallet", error);
     }
   };
+
+  useEffect(() => {
+    if (account) {
+      localStorage.setItem("ethereumAccount", account);
+    } else {
+      localStorage.removeItem("ethereumAccount");
+    }
+  }, [account]);
 
   return (
     <button

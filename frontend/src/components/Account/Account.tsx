@@ -47,6 +47,7 @@ function Account() {
               <button
                 onClick={() => {
                   dispatch(setAccountWindowActive(false));
+                  localStorage.removeItem("ethereumAccount");
                   deactivate();
                 }}
                 className="bg-[red] bg-opacity-[70%] text-[#fff] px-[10px] py-[5px] rounded-md font-bold"

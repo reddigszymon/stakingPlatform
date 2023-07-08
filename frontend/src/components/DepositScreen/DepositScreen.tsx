@@ -8,6 +8,8 @@ import { fetchEarned } from "../../utils/fetchEarned";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { useDispatch } from "react-redux";
+import { BsChevronLeft } from "react-icons/bs";
+import { setDepositActive } from "../../reducers/appReducer";
 
 import { setEarned } from "../../reducers/appReducer";
 
@@ -53,7 +55,13 @@ function DepositScreen() {
       } md:z-[10] text-[12px] sm:text-[16px] md:text-[18px]`}
     >
       <div className="flex w-full justify-between items-center mb-[10px]">
-        <p className="text-[#A8A8A8] text-[22px]">UNI Staking</p>
+        <button
+          onClick={() => dispatch(setDepositActive(false))}
+          className="flex items-center justify-center gap-[5px] text-[#A8A8A8]"
+        >
+          <BsChevronLeft />
+          <p className="text-[22px]">UNI Staking</p>
+        </button>
         <img src={uniToken} alt="UNI Token" />
       </div>
       <div className="flex w-full justify-between items-center mb-[15px]">

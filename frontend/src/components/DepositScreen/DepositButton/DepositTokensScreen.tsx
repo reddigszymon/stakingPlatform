@@ -31,7 +31,7 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
       availableBalance !== undefined &&
       parseFloat(inputValue) > 0 &&
       parseFloat(inputValue) <=
-        parseFloat((availableBalance / 10 ** 18).toFixed(2))
+        parseFloat((Math.floor(availableBalance / 10 ** 16) / 100).toFixed(2))
     ) {
       setTransactionActive(true);
       try {
@@ -40,7 +40,7 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
         setApprovalPending(false);
         const hash = await depositTokens(active, chainId, inputValue);
         setTxHash(hash);
-        updateInfo(dispatch, chainId, active, account);
+        await updateInfo(dispatch, chainId, active, account);
         props.setTransactionFinished(true);
         setTransactionActive(false);
       } catch (error) {
@@ -61,7 +61,9 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
                 <span>
                   {availableBalance === undefined
                     ? "0.00"
-                    : (availableBalance / 10 ** 18).toFixed(2)}
+                    : (Math.floor(availableBalance / 10 ** 16) / 100).toFixed(
+                        2
+                      )}
                 </span>
               </p>
             </div>
@@ -84,7 +86,9 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
                     setInputValue(
                       availableBalance === undefined
                         ? "0.00"
-                        : (availableBalance / 10 ** 18).toFixed(2)
+                        : (
+                            Math.floor(availableBalance / 10 ** 16) / 100
+                          ).toFixed(2)
                     )
                   }
                   className="px-[10px] py-[5px] bg-[#FF007A] rounded-lg text-[#ffff] font-bold tracking-wider text-[14px]"
@@ -107,7 +111,9 @@ function DepositTokensScreen(props: DepositTokensScreenProps) {
                 availableBalance !== undefined &&
                 parseFloat(inputValue) > 0 &&
                 parseFloat(inputValue) <=
-                  parseFloat((availableBalance / 10 ** 18).toFixed(2))
+                  parseFloat(
+                    (Math.floor(availableBalance / 10 ** 16) / 100).toFixed(2)
+                  )
                   ? "bg-[#FF007A]"
                   : "bg-[gray]"
               }  text-[#fff] opacity-90 w-full rounded-lg font-bold tracking-wide`}

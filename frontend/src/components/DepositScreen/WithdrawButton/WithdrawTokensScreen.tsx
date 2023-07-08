@@ -28,13 +28,14 @@ function WithdrawTokensScreen(props: DepositTokensScreenProps) {
     if (
       userDeposit !== undefined &&
       parseFloat(inputValue) > 0 &&
-      parseFloat(inputValue) <= parseFloat((userDeposit / 10 ** 18).toFixed(2))
+      parseFloat(inputValue) <=
+        parseFloat((Math.floor(userDeposit / 10 ** 16) / 100).toFixed(2))
     ) {
       setTransactionActive(true);
       try {
         const hash = await withdrawTokens(active, chainId, inputValue);
         setTxHash(hash);
-        updateInfo(dispatch, chainId, active, account);
+        await updateInfo(dispatch, chainId, active, account);
         props.setTransactionFinished(true);
         setTransactionActive(false);
       } catch (error) {
@@ -55,7 +56,7 @@ function WithdrawTokensScreen(props: DepositTokensScreenProps) {
                 <span>
                   {userDeposit === undefined
                     ? "0.00"
-                    : (userDeposit / 10 ** 18).toFixed(2)}
+                    : (Math.floor(userDeposit / 10 ** 16) / 100).toFixed(2)}
                 </span>
               </p>
             </div>
@@ -78,7 +79,7 @@ function WithdrawTokensScreen(props: DepositTokensScreenProps) {
                     setInputValue(
                       userDeposit === undefined
                         ? "0.00"
-                        : (userDeposit / 10 ** 18).toFixed(2)
+                        : (Math.floor(userDeposit / 10 ** 16) / 100).toFixed(2)
                     )
                   }
                   className="px-[10px] py-[5px] bg-[#FF007A] rounded-lg text-[#ffff] font-bold tracking-wider text-[14px]"
@@ -101,7 +102,9 @@ function WithdrawTokensScreen(props: DepositTokensScreenProps) {
                 userDeposit !== undefined &&
                 parseFloat(inputValue) > 0 &&
                 parseFloat(inputValue) <=
-                  parseFloat((userDeposit / 10 ** 18).toFixed(2))
+                  parseFloat(
+                    (Math.floor(userDeposit / 10 ** 16) / 100).toFixed(2)
+                  )
                   ? "bg-[#FF007A]"
                   : "bg-[gray]"
               }  text-[#fff] opacity-90 w-full rounded-lg font-bold tracking-wide`}

@@ -10,9 +10,7 @@ import { useSelector } from "react-redux";
 
 function FinalScreen() {
   const dispatch = useDispatch();
-  const { finalScreenActive, availableBalance } = useSelector(
-    (state: RootState) => state.app
-  );
+  const { finalScreenActive } = useSelector((state: RootState) => state.app);
 
   const [isVisible, setIsVisible] = useState(false);
   const [transactionFinished, setTransactionFinished] = useState(false);
@@ -51,7 +49,12 @@ function FinalScreen() {
               {!transactionFinished && <RxCross2 />}
             </button>
           </div>
-          {finalScreenActive === "Claim Rewards" && <ClaimRewardsScreen />}
+          {finalScreenActive === "Claim Rewards" && (
+            <ClaimRewardsScreen
+              transactionFinished={transactionFinished}
+              setTransactionFinished={setTransactionFinished}
+            />
+          )}
           {finalScreenActive === "Withdraw tokens" && (
             <WithdrawTokensScreen
               transactionFinished={transactionFinished}
